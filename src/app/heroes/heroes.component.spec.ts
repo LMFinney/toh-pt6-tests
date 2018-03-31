@@ -1,16 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { of } from 'rxjs/observable/of';
 
 import { HeroesComponent } from './heroes.component';
+import { HeroService } from '../hero.service';
 
 describe('HeroesComponent', () => {
   let component: HeroesComponent;
   let fixture: ComponentFixture<HeroesComponent>;
 
   beforeEach(async(() => {
+    const svcSpy = jasmine.createSpyObj('heroService', ['getHeroes']);
+    svcSpy.getHeroes.and.returnValue(of([]));
+
     TestBed.configureTestingModule({
-      declarations: [ HeroesComponent ]
+      imports: [RouterModule],
+      providers: [
+        {provide: HeroService, useValue: svcSpy}
+      ],
+      declarations: [HeroesComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
